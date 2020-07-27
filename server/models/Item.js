@@ -36,5 +36,5 @@ const itemSchema = new Schema(
       },
       { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
-const itemModel = mongoose.model('item', itemSchema);
+const itemModel = mongoose.model('Item', itemSchema);
 module.exports = itemModel

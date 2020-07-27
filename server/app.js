@@ -1,6 +1,6 @@
 require("dotenv").config();
 require("./config/dbConnection");
-
+const cors = require("cors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -26,6 +26,14 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
+  })
+);
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    credentials: true,
   })
 );
 

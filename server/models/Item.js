@@ -36,5 +36,5 @@ const itemSchema = new Schema(
       },
       { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
-const item = mangosse.model('item', itemSchema);
-module.exports = item;
+const itemModel = mongoose.model('item', itemSchema);
+module.exports = itemModel

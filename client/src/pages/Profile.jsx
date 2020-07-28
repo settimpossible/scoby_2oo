@@ -24,7 +24,23 @@ class Profile extends Component {
     let value = event.target.value;
     this.setState({ [key]: value });
   };
-  handleSubmit = (event) => {};
+  handleSubmit = (event) => {
+    event.preventDefault();
+    apiHandler
+    .updateUser(this.state)
+    .then((data) => {
+      console.log(data)
+      this.props.authContext.setUser(data);
+      this.user.phoneNumber.push("/");
+    })
+    .catch((error) => {
+      console.log(error);
+      // Display error message here, if you set the state
+    });
+};
+
+
+  
 
   render() {
     const { authContext } = this.props;
@@ -141,7 +157,7 @@ class Profile extends Component {
         </section>
       </div>
     );
-  }
-}
-
+              }
+ 
+            }
 export default withUser(Profile);

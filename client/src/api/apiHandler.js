@@ -50,4 +50,22 @@ export default {
       .then((res) => res.data)
       .catch(errorHandler);
   },
+  getOneItem(id){
+    return service
+    .get(`/${id}`)
+    .then((res) => res.data)
+    .catch(errorHandler);
+  },
+  updateItems(id, data) {
+    return service
+    .patch(`/${id}`, data)
+    .then((res) => res.data)
+    .catch(errorHandler);
+  },
+  deleteItems(id){
+    return service
+    .delete(`/${id}`)
+    .then((res) => res.data)
+    .catch(errorHandler);
+  }
 };

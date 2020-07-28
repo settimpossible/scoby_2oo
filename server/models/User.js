@@ -11,11 +11,14 @@ const userSchema = new Schema({
   },
   email: String,
   password: String,
+  phoneNumber: String,
+  secondaryEmail: String,
   city: String,
-  contact: {
+  id_contact: {
     type: Schema.Types.ObjectId,
     ref: "Contact",
   },
+  
 });
 
 const User = mongoose.model("User", userSchema);

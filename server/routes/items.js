@@ -2,7 +2,7 @@ const express = require('express');
 const router = new express.Router();
 
 const itemModel = require('../models/Item');
-const userModel = require('../models/User');
+// const userModel = require('../models/User');
 
 router.get('/', (req, res, next) => {
     itemModel

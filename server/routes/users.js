@@ -54,6 +54,16 @@ router.get('/:id', (req, res) => {
         res.status(500).json(err);
       });
   });
+  router.patch('/edit', (req, res) => {
+    userModel
+      .findByIdAndUpdate(req.session.currentUser._id, req.body, {new: true})
+      .then((updatedProfile) => {
+        res.status(200).json(updatedProfile);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  });
 
   router.patch('/:id', (req, res) => {
     userModel

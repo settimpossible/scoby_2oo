@@ -122,14 +122,14 @@ class Profile extends Component {
           </div> */}
 
           {/* Break whatever is belo  */}
-          <div className="CardItem">
+          {/* <div className="CardItem">
             <div className="item-empty">
               <div className="round-image">
                 <img src="/media/personal-page-empty-state.svg" alt="" />
               </div>
               <p>You don't have any items :(</p>
             </div>
-          </div>
+          </div> */}
 
           <div className="CardItem">
             <h3>Your items</h3>

@@ -8,23 +8,22 @@ class FormUpdate extends Component {
   state = {};
 
   handleChange = (event) => {
-    const value =
-      event.target.type === "file" ? event.target.files[0] : event.target.value;
-
-    const key = event.target.name;
-
+    let key = event.target.name;
+    let value = event.target.value;
+    console.log(key, value);
     this.setState({ [key]: value });
   };
 
   handleSubmit = (event) => {
+      
     event.preventDefault();
-    const { authContext } = this.props;
+    // const userId = this.props.match.par
     apiHandler
       .updateProfile(this.state)
       .then((data) => {
-          console.log(authContext)
-       this.props.authContext.setUser(data);
-        this.props.authContext.push("/");
+          console.log(data)
+    //    this.props.data.setUser(data);
+    //     this.props.data.push("/");
       })
       .catch((error) => {
         console.log(error);

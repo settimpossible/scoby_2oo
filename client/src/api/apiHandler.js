@@ -68,6 +68,12 @@ export default {
       .then((res) => res.data)
       .catch(errorHandler);
   },
+  updateUser(data) {
+    return service
+      .patch(`/api/users/number`, data)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
   deleteItems(id) {
     return service
       .delete(`/${id}`)

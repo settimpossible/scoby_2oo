@@ -44,6 +44,16 @@ router.get('/:id', (req, res) => {
         res.status(500).json(err);
       });
   });
+  router.patch('/number', (req, res) => {
+    userModel
+      .findByIdAndUpdate(req.session.currentUser._id, req.body, {new: true})
+      .then((updatedNum) => {
+        res.status(200).json(updatedNum);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  });
 
   router.patch('/:id', (req, res) => {
     userModel
@@ -55,7 +65,6 @@ router.get('/:id', (req, res) => {
         res.status(500).json(err);
       });
   });
-
   router.delete('/:id', (req, res) => {
     userModel
       .findByIdAndDelete(req.params.id)

@@ -1,52 +1,83 @@
 import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
+import API from "../../api/apiHandler";
 import "../../styles/form.css";
-
-const initialState = {
-  name: "",
-  category: "",
-  quantity: "",
-  location: [],
-  description: "",
-  image: "",
-};
+import Avatar from "../icon/Avatar";
+import apiHandler from "../../api/apiHandler";
 
 class ItemForm extends Component {
-  state = initialState;
+  state = {
+    name: "hey",
+    category: [],
+    quantity: null,
+    address: "",
+    description: "",
+    avatar: "",
+    tmpAvatar: "",
+    contact: "",
+    geometry: {
+      type: "",
+      coordinates: [],
+    },
+    // id_user: "",
+  };
+
+  buildFormData(formData, data, parentKey) {
+    if (
+      data &&
+      typeof data === "object" &&
+      !(data instanceof Date) &&
+      !(data instanceof File)
+    ) {
+      Object.keys(data).forEach((key) => {
+        this.buildFormData(
+          formData,
+          data[key],
+          parentKey ? `${parentKey}[${key}]` : key
+        );
+      });
+    } else {
+      const value = data == null ? "" : data;
+
+      formData.append(parentKey, value);
+    }
+  }
+
+  jsonToFormData(data) {
+    const formData = new FormData();
+    this.buildFormData(formData, data);
+    return formData;
+  }
 
   handleChange(event) {
     let key = event.target.name;
     let value = event.target.value;
-
-    if (event.type === "upload") {
-      this.updateImg(event);
-    } else this.setState({ ...this.state, [key]: value });
+    console.log(event.target.value);
+    console.log(event.target.name);
+    this.setState({ [key]: value });
   }
 
-  updateImg(event) {
-    this.setState({ ...this.state, image: event.target.files[0] });
-  }
+  handleImage = (event) => {
+    this.setState({
+      avatar: event.target.files[0],
+      tmpAvatar: URL.createObjectURL(event.target.files[0]),
+    });
+  };
 
   handleSubmit = (event) => {
-    event.preventDefault();
-
     console.log(this.state);
-    let fd = new FormData();
-    fd.append("name", this.state.name);
-    fd.append("category", this.state.category);
-    fd.append("quantity", this.state.quantity);
-    fd.append("location", this.state.location);
-    fd.append("description", this.state.description);
-
-    console.log(fd);
-    // In order to send back the data to the client, since there is an input type file you have to send the
-    // data as formdata.
-    // The object that you'll be sending will maybe be a nested object, in order to handle nested objects in our form data
-    // Check out the stackoverflow solution below : )
-
-    this.setState(initialState);
-    // Nested object into formData by user Vladimir "Vladi vlad" Novopashin @stackoverflow : ) => https://stackoverflow.com/a/42483509
+    event.preventDefault();
+    apiHandler
+      .createItem(this.jsonToFormData(this.state))
+      .then((apiRes) => console.log(apiRes))
+      .catch((err) => console.log(err));
   };
+  // In order to send back the data to the client, since there is an input type file you have to send the
+  // data as formdata.
+  // The object that you'll be sending will maybe be a nested object, in order to handle nested objects in our form data
+  // Check out the stackoverflow solution below : )
+
+  // Nested object into formData by user Vladimir "Vladi vlad" Novopashin @stackoverflow : ) => https://stackoverflow.com/a/42483509
 
   handlePlace = (place) => {
     // This handle is passed as a callback to the autocomplete component.
@@ -56,6 +87,14 @@ class ItemForm extends Component {
   };
 
   render() {
+    const {
+      name,
+      category,
+      quantity,
+      address,
+      tmpAvatar,
+      description,
+    } = this.state;
     return (
       <div className="ItemForm-container">
         <form
@@ -72,9 +111,11 @@ class ItemForm extends Component {
             <input
               id="name"
               className="input"
+              value={this.state.name}
               name="name"
               type="text"
               placeholder="What are you giving away ?"
+              defaultValue={name}
             />
           </div>
 
@@ -83,7 +124,7 @@ class ItemForm extends Component {
               Category
             </label>
 
-            <select id="category" name="category" defaultValue="-1">
+            <select id="category" name="category" defaultValue="Kombucha">
               <option value="-1" disabled>
                 Select a category
               </option>
@@ -101,13 +142,14 @@ class ItemForm extends Component {
             <input
               className="input"
               name="quantity"
+              defaultValue="1"
               id="quantity"
               type="number"
             />
           </div>
 
           <div className="form-group">
-            <label className="label" htmlFor="location">
+            <label className="label" htmlFor="address" name="address">
               Address
             </label>
             <LocationAutoComplete onSelect={this.handlePlace} />
@@ -119,16 +161,19 @@ class ItemForm extends Component {
             </label>
             <textarea
               id="description"
+              name="description"
               className="text-area"
               placeholder="Tell us something about this item"
             ></textarea>
           </div>
 
           <div className="form-group">
-            <label className="custom-upload label" htmlFor="image">
+            {/* <label className="custom-upload label" htmlFor="image">
               Upload image
-            </label>
-            <input className="input" id="image" type="file" />
+            </label> */}
+            <Avatar avatar={tmpAvatar} clbk={this.handleImage} />
+
+            {/* <input className="input" id="image" type="file" /> */}
           </div>
 
           <h2>Contact information</h2>
@@ -150,7 +195,6 @@ class ItemForm extends Component {
             Want to be contacted by phone? Add your phone number in your
             personal page.
           </p>
-
           <button className="btn-submit">Add Item</button>
         </form>
       </div>

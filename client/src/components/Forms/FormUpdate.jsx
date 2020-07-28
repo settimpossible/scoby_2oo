@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
-import { withUser } from "../Auth/withUser";
+// import { Link, withRouter } from "react-router-dom";
+// import { withUser } from "../Auth/withUser";
 import apiHandler from "../../api/apiHandler";
 import "../../styles/form.css";
 
-class FormSignup extends Component {
+class FormUpdate extends Component {
   state = {};
 
   handleChange = (event) => {
@@ -19,19 +19,12 @@ class FormSignup extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { authContext } = this.props;
-    // authContext
-    //   .signup(this.state)
-    //   .then(() => {
-    //     this.props.history.push("/profile");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
     apiHandler
-      .updateUser(this.state)
+      .updateProfile(this.state)
       .then((data) => {
-        authContext.setUser(data);
-        this.props.history.push("/");
+          console.log(authContext)
+       this.props.authContext.setUser(data);
+        this.props.authContext.push("/");
       })
       .catch((error) => {
         console.log(error);
@@ -43,7 +36,7 @@ class FormSignup extends Component {
       <section className="form-section">
         <header className="header">
           <h1>
-            Hello
+            Update your Profile
             <span role="img" aria-label="hand">
               👋
             </span>
@@ -56,7 +49,7 @@ class FormSignup extends Component {
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
         >
-          <h2 className="title">Create account</h2>
+          <h2 className="title">Update account</h2>
 
           <div className="form-group">
             <label className="label" htmlFor="firstName">
@@ -86,7 +79,7 @@ class FormSignup extends Component {
             <label className="label" htmlFor="email">
               Email
             </label>
-            <input className="input" id="email" type="email" name="email" />
+            <input className="input" id="email" type="email" name="email" defaultValue={this.props.email}/>
           </div>
 
           <div className="form-group">
@@ -101,18 +94,15 @@ class FormSignup extends Component {
             />
           </div>
 
-          <button className="btn-submit">Let's go!</button>
+          <button className="btn-submit">Update !</button>
         </form>
 
         <div className="form-section-bottom">
-          <p>Already have an account? </p>
-          <Link className="link" to="/signin">
-            Log in
-          </Link>
+         
         </div>
       </section>
     );
   }
 }
 
-export default withRouter(withUser(FormSignup));
+export default FormUpdate;

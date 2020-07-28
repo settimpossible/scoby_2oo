@@ -97,6 +97,7 @@ class Profile extends Component {
             <h2>
               {user.firstName} {user.lastName}
             </h2>
+            <p>{user.phoneNumber}</p>
             <Link className="link" to="/profile/settings">
               Edit profile
             </Link>

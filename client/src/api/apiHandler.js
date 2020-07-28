@@ -62,6 +62,12 @@ export default {
     .then((res) => res.data)
     .catch(errorHandler);
   },
+  updateProfile(data) {
+    return service
+    .patch( `/api/users/profile`,data)
+    .then((res) => res.data)
+    .catch(errorHandler);
+  },
   updateUser(data) {
     return service
     .patch( `/api/users/number`,data)
